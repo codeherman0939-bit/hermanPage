@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>我的 GitHub Pages</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, "Microsoft JhengHei", sans-serif;
+      background: #f5f6fa;
+    }
+    .card {
+      padding: 40px 60px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    h1 {
+      margin: 0 0 10px;
+    }
+    p {
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🚀 GitHub Pages</h1>
+    <p>靜態網頁已成功部署</p>
+    <p>更新時間：<span id="time"></span></p>
+  </div>
+
+  <script>
+    document.getElementById("time").textContent =
+      new Date().toLocaleString("zh-TW");
+  </script>
+</body>
+</html>
