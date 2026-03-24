@@ -1,44 +1,123 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-  <meta charset="UTF-8">
-  <title>我的 GitHub Pages</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: Arial, "Microsoft JhengHei", sans-serif;
-      background: #f5f6fa;
-    }
-    .card {
-      padding: 40px 60px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    h1 {
-      margin: 0 0 10px;
-    }
-    p {
-      color: #666;
-    }
-  </style>
-</head>
-<body>
-  <div class="card">
-    <h1>🚀 GitHub Herman Pages</h1>
-    <p>靜態網頁已成功部署</p>
-    <p>更新時間：<span id="time"></span></p>
-  </div>
 
-  <script>
-    document.getElementById("time").textContent =
-      new Date().toLocaleString("zh-TW");
-  </script>
-</body>
-</html>
+ <!DOCTYPE html>
+ <html lang="zh-TW">
+ <head>
+   <meta charset="UTF-8">
+   <title>我的 GitHub Pages</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <style>
++    :root {
++      --matrix-green: #39ff14;
++    }
++
+     body {
+       margin: 0;
+-      height: 100vh;
++      min-height: 100vh;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       font-family: Arial, "Microsoft JhengHei", sans-serif;
+-      background: #f5f6fa;
++      background: #020602;
++      color: #fff;
++      overflow: hidden;
++      position: relative;
+     }
++
++    #matrix {
++      position: fixed;
++      inset: 0;
++      width: 100%;
++      height: 100%;
++      z-index: 0;
++    }
++
+     .card {
++      position: relative;
++      z-index: 1;
+       padding: 40px 60px;
+-      background: white;
+       border-radius: 12px;
+-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+       text-align: center;
++      background: rgba(0, 0, 0, 0.55);
++      border: 1px solid rgba(57, 255, 20, 0.35);
++      box-shadow: 0 0 25px rgba(57, 255, 20, 0.2);
++      backdrop-filter: blur(2px);
+     }
++
+     h1 {
+       margin: 0 0 10px;
++      color: var(--matrix-green);
++      text-shadow: 0 0 8px rgba(57, 255, 20, 0.7);
+     }
++
+     p {
+-      color: #666;
++      color: #d3f8cc;
+     }
+   </style>
+ </head>
+ <body>
++  <canvas id="matrix"></canvas>
++
+   <div class="card">
+     <h1>🚀 GitHub Herman Pages</h1>
+     <p>靜態網頁已成功部署</p>
+     <p>更新時間：<span id="time"></span></p>
+   </div>
+ 
+   <script>
+-    document.getElementById("time").textContent =
+-      new Date().toLocaleString("zh-TW");
++    const timeElement = document.getElementById("time");
++    timeElement.textContent = new Date().toLocaleString("zh-TW");
++
++    const canvas = document.getElementById("matrix");
++    const context = canvas.getContext("2d");
++
++    const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノ";
++    const fontSize = 16;
++    let columns = 0;
++    let drops = [];
++
++    function setupCanvas() {
++      const ratio = window.devicePixelRatio || 1;
++      canvas.width = Math.floor(window.innerWidth * ratio);
++      canvas.height = Math.floor(window.innerHeight * ratio);
++      canvas.style.width = `${window.innerWidth}px`;
++      canvas.style.height = `${window.innerHeight}px`;
++      context.setTransform(ratio, 0, 0, ratio, 0, 0);
++
++      columns = Math.floor(window.innerWidth / fontSize);
++      drops = Array.from({ length: columns }, () => Math.random() * -100);
++    }
++
++    function drawMatrixRain() {
++      context.fillStyle = "rgba(2, 6, 2, 0.08)";
++      context.fillRect(0, 0, window.innerWidth, window.innerHeight);
++
++      context.fillStyle = "#39ff14";
++      context.font = `${fontSize}px monospace`;
++
++      for (let i = 0; i < columns; i += 1) {
++        const text = chars.charAt(Math.floor(Math.random() * chars.length));
++        const x = i * fontSize;
++        const y = drops[i] * fontSize;
++        context.fillText(text, x, y);
++
++        if (y > window.innerHeight && Math.random() > 0.975) {
++          drops[i] = 0;
++        }
++
++        drops[i] += 1;
++      }
++    }
++
++    setupCanvas();
++    setInterval(drawMatrixRain, 33);
++    window.addEventListener("resize", setupCanvas);
+   </script>
+ </body>
+ </html>
